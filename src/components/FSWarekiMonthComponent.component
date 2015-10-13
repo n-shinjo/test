@@ -1,0 +1,34 @@
+<apex:component >
+<!--
+下記の例のように西暦を和暦に変換して表示するコンポーネントです。
+【例】　2015/01/01　⇒　平成27年01月01日
+
+このコンポーネントを利用するVisualforceページは下記の要領で記述します。
+<c:FSWarekiComponent seireki="{![和暦にしたい日付型のカスタム項目]}"/>
+
+特記
+昭和と平成にのみ対応しています。元号が変わった場合にはメンテナンスが必要です。
+-->
+    <apex:attribute name="seireki" description="西暦の日付" type="Date" />
+    <apex:attribute name="short" description="短縮表記" type="boolean" />
+
+    <!-- 平成 -->
+    <apex:outputText value="{0,number,平成##}年{1,date,MM}月" escape="false" rendered="{!AND(AND(NOT(ISNULL(seireki)),seireki >= DATEVALUE('1989-01-08')),short = false)}">
+        <apex:param value="{!YEAR(seireki)-1989+1}" />
+        <apex:param value="{!seireki}" />
+    </apex:outputText>
+    <apex:outputText value="{0,number,H##}/{1,date,MM}" escape="false" rendered="{!AND(AND(NOT(ISNULL(seireki)),seireki >= DATEVALUE('1989-01-08')),short = true)}">
+        <apex:param value="{!YEAR(seireki)-1989+1}" />
+        <apex:param value="{!seireki}" />
+    </apex:outputText>
+
+    <!-- 昭和 -->
+    <apex:outputText value="{0,number,昭和##}年{1,date,MM}月" escape="false" rendered="{!AND(AND(NOT(ISNULL(seireki)),seireki < DATEVALUE('1989-01-08')),short = false)}">
+        <apex:param value="{!YEAR(seireki)-1926+1}" />
+        <apex:param value="{!seireki}" />
+    </apex:outputText>
+    <apex:outputText value="{0,number,S##}/{1,date,MM}" escape="false" rendered="{!AND(AND(NOT(ISNULL(seireki)),seireki < DATEVALUE('1989-01-08')),short = true)}">
+        <apex:param value="{!YEAR(seireki)-1926+1}" />
+        <apex:param value="{!seireki}" />
+    </apex:outputText>
+</apex:component>

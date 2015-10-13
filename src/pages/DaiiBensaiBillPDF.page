@@ -1,0 +1,496 @@
+<apex:page renderas="pdf"
+ showHeader="false"
+ sidebar="false"
+ applyBodyTag="false"
+ applyHtmlTag="false"
+ standardController="Keiyaku__c"
+extensions="DaiiBensaiBillPDF"
+ >
+<html>
+    <head>
+        <style>
+            @page {
+                size: 8.27in 11.69in;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: 'Arial Unicode MS';
+                font-size: 12pt;
+                padding: 5px;
+            }
+            headerRow   {
+                border: 1px solid red;
+            }
+            dataCell   {
+                border: 1px solid red;
+            }
+            .headerRow .TableTitle {
+                color: #CC0000 !important; 
+            }
+        </style>
+    </head>
+    <!-- [特記]：本ページを修正する場合は、border: 0px を border: 1px に変更して行うと進めやすいです。 -->
+    <body>
+        <div style="border: 0px solid red; height: 1015px; padding: 15px 40px;">
+            <div style="border: 0px solid blue;">
+                <div style="text-align: center; font-size: 24pt;">請求書</div>
+                <div style="text-align: right; font-size: normal; padding: 30px 0 0 20px; font-size: 12pt;"><c:FSWarekiComponent seireki="{!keiyaku['Billing_Date__c']}"/></div>
+            </div>
+            <div style="border: 0px solid blue;">
+                <div style="text-align: left; font-size: 18pt; text-decoration: underline;">{!keiyaku['Billing_Name__c']}　様</div>
+                <div style="text-align: right; font-size: 14pt; padding: 0px 0 0 20px;">{!$Label.Company_Name}</div>
+                <div style="text-align: right; font-size: 12pt; padding: 0px 0 0 20px;">{!$Label.Company_Address}</div>
+                <div style="text-align: right; font-size: 12pt; padding: 0px 0 0 20px;">TEL {!$Label.Company_Phone}</div>
+                <div style="text-align: right; font-size: 12pt; padding: 0px 0 0 20px;">FAX {!$Label.Company_FAX}</div>
+            </div>
+
+            <div style="border: 0px solid blue; padding-top: 20px;">
+                    <table border="0" width="100%" style="white-space: normal;">
+                        <tr>
+                          <td>
+平素は格別のお引き立てに預かり厚く御礼申し上げます。<br/>
+{!keiyaku['BukkenName__c']} {!keiyaku['Goshitu__c']}　{!keiyaku['Nyukyosha__r.Name']}　様の<br/>
+<apex:outputPanel id="DTaishoMonth_1_1" layout="none" rendered="{!Months > 0}">
+        <c:FSWarekiMonthComponent seireki="{!YearMonth[0]}"/>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_1_2" layout="none" rendered="{!Months > 1}">
+        ・<c:FSWarekiMonthComponent seireki="{!YearMonth[1]}"/>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_1_3" layout="none" rendered="{!Months > 2}">
+        ・<c:FSWarekiMonthComponent seireki="{!YearMonth[2]}"/>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_1_4" layout="none" rendered="{!Months > 3}">
+        ・<c:FSWarekiMonthComponent seireki="{!YearMonth[3]}"/>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_1_5" layout="none" rendered="{!Months > 4}">
+        ・<c:FSWarekiMonthComponent seireki="{!YearMonth[4]}"/>
+</apex:outputPanel>
+分賃料が未納となっておりますので、<br/>
+<apex:outputPanel id="R_Name" layout="none" rendered="{!keiyaku['Billing_Type__c'] == '連帯保証人1' || keiyaku['Billing_Type__c'] == '連帯保証人2' }">
+連帯保証人となる　{!keiyaku['Billing_Name__c']}　様にて
+</apex:outputPanel>
+                              お支払いいただけますようよろしくお願い致します。<br/>
+<apex:outputPanel id="DTaishoMonth_2_1" layout="none" rendered="{!Months > 0}">
+        <c:FSWarekiMonthComponent seireki="{!YearMonth[0]}"/>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_2_2" layout="none" rendered="{!Months > 1}">
+        ・<c:FSWarekiMonthComponent seireki="{!YearMonth[1]}"/>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_2_3" layout="none" rendered="{!Months > 2}">
+        ・<c:FSWarekiMonthComponent seireki="{!YearMonth[2]}"/>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_2_4" layout="none" rendered="{!Months > 3}">
+        ・<c:FSWarekiMonthComponent seireki="{!YearMonth[3]}"/>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_2_5" layout="none" rendered="{!Months > 4}">
+        ・<c:FSWarekiMonthComponent seireki="{!YearMonth[4]}"/>
+</apex:outputPanel>
+の賃料あわせてのご請求額は下記の通りです。
+                          </td>
+                        </tr>
+                    </table>
+            </div>
+
+            <div style="border: 0px solid blue; padding-top:15px;">
+              <div style="text-align: left; font-size: 20pt; text-decoration: underline;">ご請求額：
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!total_Zankin2}"></apex:param></apex:outputtext> 円
+                </div>
+            </div>
+
+            <div style="border: 0px solid blue; padding-top:15px;">
+              <div style="text-align: left; font-size: 16pt; text-decoration: underline;">支払期限：
+                  <c:FSWarekiComponent seireki="{!siharaikijitu}"/>
+              </div>
+            </div>
+
+            <div style="border: 0px solid blue; padding-top: 15px;">
+                <div>
+                    <table border="0" width="100%">
+                        <tr>
+                            <th width="50px" valign="top" align="center" rowspan="3">【振込先】</th>
+                            <td>海邦銀行　浦添支店（普）0640438</td>
+                        </tr>
+                        <tr>
+                            <td>琉球銀行　城間支店（普）530892</td>
+                        </tr>
+                        <tr>
+                            <td>沖縄銀行　城間支店（普）1722145</td>
+                        </tr>
+                    </table>
+                </div>
+              </div>
+
+            <div style="border: 0px solid blue; padding-top: 15px;">
+                    <table border="0" width="100%">
+                        <tr>
+                          <td>
+上記いずれかの振込先へお支払い下さい。<br/>
+※恐れ入りますが、振込手数料はお客様にてご負担いただきますようお願い致します。<br/>
+※支払方法につきましては、お振込みのみとなります。<br/>
+また、この件につきましては大平不動産（株）窓口でのお支払いはできません。
+                          </td>
+                        </tr>
+                    </table>
+            </div>
+
+            <div style="border: 0px solid blue; padding-top: 15px;">
+            <div style="border: 0px solid blue; padding-top: 0px;">
+賃料の詳細につきましては下記の内容となります。<br/>
+件名：
+<apex:outputPanel id="DTaishoMonth_3_1" layout="none" rendered="{!Months > 0}">
+        <c:FSWarekiMonthComponent seireki="{!YearMonth[0]}"/>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_3_2" layout="none" rendered="{!Months > 1}">
+        ・<c:FSWarekiMonthComponent seireki="{!YearMonth[1]}"/>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_3_3" layout="none" rendered="{!Months > 2}">
+        ・<c:FSWarekiMonthComponent seireki="{!YearMonth[2]}"/>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_3_4" layout="none" rendered="{!Months > 3}">
+        ・<c:FSWarekiMonthComponent seireki="{!YearMonth[3]}"/>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_3_5" layout="none" rendered="{!Months > 4}">
+        ・<c:FSWarekiMonthComponent seireki="{!YearMonth[4]}"/>
+</apex:outputPanel>
+分賃料
+            </div>
+                    <table width="95%" align="center" style="border: solid 1px #000000; border-collapse: collapse;">
+                        <tr>
+                            <td width="120px" align="center" style="border: solid 1px black;">名称</td>
+<apex:outputPanel id="DTaishoMonth_1" layout="none" rendered="{!Months > 0}">
+    <td width="120px" align="center" style="border: solid 1px black;">
+        <c:FSWarekiMonthComponent seireki="{!YearMonth[0]}" short="{!Months > 3}"/>
+    </td>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_2" layout="none" rendered="{!Months > 1}">
+    <td width="120px" align="center" style="border: solid 1px black;">
+        <c:FSWarekiMonthComponent seireki="{!YearMonth[1]}" short="{!Months > 3}"/>
+    </td>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_3" layout="none" rendered="{!Months > 2}">
+    <td width="120px" align="center" style="border: solid 1px black;">
+        <c:FSWarekiMonthComponent seireki="{!YearMonth[2]}" short="{!Months > 3}"/>
+    </td>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_4" layout="none" rendered="{!Months > 3}">
+    <td width="120px" align="center" style="border: solid 1px black;">
+        <c:FSWarekiMonthComponent seireki="{!YearMonth[3]}" short="{!Months > 3}"/>
+    </td>
+</apex:outputPanel>
+<apex:outputPanel id="DTaishoMonth_5" layout="none" rendered="{!Months > 4}">
+    <td width="120px" align="center" style="border: solid 1px black;">
+        <c:FSWarekiMonthComponent seireki="{!YearMonth[4]}" short="{!Months > 3}"/>
+    </td>
+</apex:outputPanel>
+                            <td width="140px" align="center" style="border: solid 1px black;">合計</td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="border: solid 1px black;">家　　　賃</td>
+<apex:outputPanel id="Rent_Money_1" layout="none" rendered="{!Months > 0}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Rent_Money[0]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Rent_Money_2" layout="none" rendered="{!Months > 1}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Rent_Money[1]}"></apex:param></apex:outputtext> 円
+                            </td>
+                            </apex:outputPanel>
+<apex:outputPanel id="Rent_Money_3" layout="none" rendered="{!Months > 2}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Rent_Money[2]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Rent_Money_4" layout="none" rendered="{!Months > 3}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Rent_Money[3]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Rent_Money_5" layout="none" rendered="{!Months > 4}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Rent_Money[4]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!total_Rent_Money}"></apex:param></apex:outputtext> 円
+                            </td>
+                        </tr>
+                        <tr>
+                             
+                            <td align="center" style="border: solid 1px black;">共　益　費</td>
+<apex:outputPanel id="Common_Fee_1" layout="none" rendered="{!Months > 0}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Common_Fee[0]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Common_Fee_2" layout="none" rendered="{!Months > 1}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Common_Fee[1]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Common_Fee_3" layout="none" rendered="{!Months > 2}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Common_Fee[2]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Common_Fee_4" layout="none" rendered="{!Months > 3}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Common_Fee[3]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Common_Fee_5" layout="none" rendered="{!Months > 4}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Common_Fee[4]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!total_Common_Fee}"></apex:param></apex:outputtext> 円
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="border: solid 1px black;">衛　生　費</td>
+<apex:outputPanel id="Health_Costs_1" layout="none" rendered="{!Months > 0}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Health_Costs[0]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Health_Costs_2" layout="none" rendered="{!Months > 1}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Health_Costs[1]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Health_Costs_3" layout="none" rendered="{!Months > 2}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Health_Costs[2]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Health_Costs_4" layout="none" rendered="{!Months > 3}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Health_Costs[3]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Health_Costs_5" layout="none" rendered="{!Months > 4}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Health_Costs[4]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!total_Health_Costs}"></apex:param></apex:outputtext> 円
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="border: solid 1px black;">水　道　料</td>
+<apex:outputPanel id="Water_Fee_1" layout="none" rendered="{!Months > 0}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Water_Fee[0]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Water_Fee_2" layout="none" rendered="{!Months > 1}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Water_Fee[1]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Water_Fee_3" layout="none" rendered="{!Months > 2}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Water_Fee[2]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Water_Fee_4" layout="none" rendered="{!Months > 3}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Water_Fee[3]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Water_Fee_5" layout="none" rendered="{!Months > 4}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Water_Fee[4]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!total_Water_Fee}"></apex:param></apex:outputtext> 円
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="border: solid 1px black;">駐　車　料</td>
+<apex:outputPanel id="Parking_lot_1" layout="none" rendered="{!Months > 0}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Parking_lot[0]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Parking_lot_2" layout="none" rendered="{!Months > 1}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Parking_lot[1]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Parking_lot_3" layout="none" rendered="{!Months > 2}">
+                            <td align="right" style="border: solid 1px black;"> 
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Parking_lot[2]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Parking_lot_4" layout="none" rendered="{!Months > 3}">
+                            <td align="right" style="border: solid 1px black;"> 
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Parking_lot[3]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Parking_lot_5" layout="none" rendered="{!Months > 4}">
+                            <td align="right" style="border: solid 1px black;"> 
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Parking_lot[4]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!total_Parking_lot}"></apex:param></apex:outputtext> 円
+                            </td>
+                        </tr>
+
+                    <!--
+                        2015/09/04 oshiro 項目追加に応じた対応
+                    -->
+                    <apex:outputtext value="" rendered="{!Months > 0 && NOT( ISBLANK( Add_Komoku_Label ) ) && total_Add_Komoku_Money != 0}">
+                        <tr>
+                            <td align="center" style="border: solid 1px black;">
+                                {!Add_Komoku_Label}
+                            </td>
+                        <apex:outputPanel layout="none" rendered="{!Months > 0}">
+                            <td align="right" style="border: solid 1px black;">
+                                <apex:outputtext value="{0, number, ###,###,###}">
+                                    <apex:param value="{!Add_Komoku_Money[0]}"></apex:param>
+                                </apex:outputtext> 円
+                            </td>
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="none" rendered="{!Months > 1}">
+                            <td align="right" style="border: solid 1px black;">
+                                <apex:outputtext value="{0, number, ###,###,###}">
+                                    <apex:param value="{!Add_Komoku_Money[1]}"></apex:param>
+                                </apex:outputtext> 円
+                            </td>
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="none" rendered="{!Months > 2}">
+                            <td align="right" style="border: solid 1px black;"> 
+                                <apex:outputtext value="{0, number, ###,###,###}">
+                                    <apex:param value="{!Add_Komoku_Money[2]}">
+                                </apex:param></apex:outputtext> 円
+                            </td>
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="none" rendered="{!Months > 3}">
+                            <td align="right" style="border: solid 1px black;"> 
+                                <apex:outputtext value="{0, number, ###,###,###}">
+                                    <apex:param value="{!Add_Komoku_Money[3]}"></apex:param>
+                                </apex:outputtext> 円
+                            </td>
+                        </apex:outputPanel>
+                        <apex:outputPanel layout="none" rendered="{!Months > 4}">
+                            <td align="right" style="border: solid 1px black;"> 
+                                <apex:outputtext value="{0, number, ###,###,###}">
+                                    <apex:param value="{!Add_Komoku_Money[4]}"></apex:param>
+                                </apex:outputtext> 円
+                            </td>
+                        </apex:outputPanel>
+                            <td align="right" style="border: solid 1px black;">
+                                <apex:outputtext value="{0, number, ###,###,###}">
+                                    <apex:param value="{!total_Add_Komoku_Money}"></apex:param>
+                                </apex:outputtext> 円
+                            </td>
+                        </tr>
+                    </apex:outputtext>
+
+                        <tr>
+                            <td align="center" style="border: solid 1px black;">督　促　料</td>
+<apex:outputPanel id="Toku_Roku_1" layout="none" rendered="{!Months > 0}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Toku_Roku[0]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Toku_Roku_2" layout="none" rendered="{!Months > 1}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Toku_Roku[1]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Toku_Roku_3" layout="none" rendered="{!Months > 2}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Toku_Roku[2]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Toku_Roku_4" layout="none" rendered="{!Months > 3}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Toku_Roku[3]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Toku_Roku_5" layout="none" rendered="{!Months > 4}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Toku_Roku[4]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!total_Toku_Roku}"></apex:param></apex:outputtext> 円
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" style="border: solid 1px black;">前回入金済</td>
+<apex:outputPanel id="NyukinKingaku_1" layout="none" rendered="{!Months > 0}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!NyukinKingaku[0]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="NyukinKingaku_2" layout="none" rendered="{!Months > 1}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!NyukinKingaku[1]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="NyukinKingaku_3" layout="none" rendered="{!Months > 2}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!NyukinKingaku[2]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="NyukinKingaku_4" layout="none" rendered="{!Months > 3}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!NyukinKingaku[3]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="NyukinKingaku_5" layout="none" rendered="{!Months > 4}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!NyukinKingaku[4]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!total_NyukinKingaku}"></apex:param></apex:outputtext> 円
+                            </td>
+                        </tr>
+
+                         
+                        <tr>
+                            <td align="center" style="border: solid 1px black;">合計金額</td>
+<apex:outputPanel id="Zankin2_1" layout="none" rendered="{!Months > 0}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Zankin2[0]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Zankin2_2" layout="none" rendered="{!Months > 1}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Zankin2[1]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Zankin2_3" layout="none" rendered="{!Months > 2}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Zankin2[2]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Zankin2_4" layout="none" rendered="{!Months > 3}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Zankin2[3]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+<apex:outputPanel id="Zankin2_5" layout="none" rendered="{!Months > 4}">
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!Zankin2[4]}"></apex:param></apex:outputtext> 円
+                            </td>
+</apex:outputPanel>
+                            <td align="right" style="border: solid 1px black;">
+<apex:outputtext value="{0, number, ###,###,###}"><apex:param value="{!total_Zankin2}"></apex:param></apex:outputtext> 円
+                            </td>
+                        </tr>
+                    </table>
+              </div>
+        </div>
+    </body>
+</html>    
+</apex:page>

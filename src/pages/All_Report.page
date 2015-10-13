@@ -1,0 +1,26 @@
+<apex:page >
+  <!-- Begin Default Content REMOVE THIS -->
+<table>
+    <tbody>
+        <tr>
+            <td style="TEXT-ALIGN: center" width="130"><a href="https://ap2.salesforce.com/00O28000002AeDj" target="_top"><img src="https://c.ap2.content.force.com/servlet/servlet.FileDownload?file=01528000000LoJ3"></img></a></td>
+            <td style="TEXT-ALIGN: center" width="130"><a href="https://ap2.salesforce.com/00O28000002AfoS" target="_top"><img src="https://c.ap2.content.force.com/servlet/servlet.FileDownload?file=01528000000LoRJ"></img></a></td>
+            <td style="TEXT-ALIGN: center" width="130"><a href="https://ap2.salesforce.com/00O28000002f1RQ" target="_top"><img src="https://c.ap2.content.force.com/servlet/servlet.FileDownload?file=01528000000LoRJ"></img></a></td>
+            <td style="TEXT-ALIGN: center" width="130"><a href="https://ap2.salesforce.com/00O28000002AgJI" target="_top"><img src="https://c.ap2.content.force.com/servlet/servlet.FileDownload?file=01528000000LoRJ"></img></a></td>
+            <td style="TEXT-ALIGN: center" width="130"><a href="https://ap2.salesforce.com/00O28000002AfEg" target="_top"><img src="https://c.ap2.content.force.com/servlet/servlet.FileDownload?file=01528000000LoRJ"></img></a></td>
+            <td style="TEXT-ALIGN: center" width="130"><a href="https://ap2.salesforce.com/00O28000003FLgg" target="_top"><img src="https://c.ap2.content.force.com/servlet/servlet.FileDownload?file=01528000000LoRJ"></img></a></td>
+        </tr>
+        <tr>    
+            <td style="TEXT-ALIGN: center; COLOR: rgb(0,0,102); FONT-WEIGHT: bold"><font size="2"><a href="https://ap2.salesforce.com/00O28000002AeDj" target="_top">入金管理</a></font></td>
+            <td style="TEXT-ALIGN: center; COLOR: rgb(0,0,102); FONT-WEIGHT: bold"><font size="2"><a href="https://ap2.salesforce.com/00O28000002AfoS" target="_top">地域(引っ越し)</a></font></td>
+            <td style="TEXT-ALIGN: center; COLOR: rgb(0,0,102); FONT-WEIGHT: bold"><font size="2"><a href="https://ap2.salesforce.com/00O28000002f1RQ" target="_top">契約経過日数</a></font></td>
+            <td style="TEXT-ALIGN: center; COLOR: rgb(0,0,102); FONT-WEIGHT: bold"><font size="2"><a href="https://ap2.salesforce.com/00O28000002AgJI" target="_top">家賃内訳</a></font></td>
+            <td style="TEXT-ALIGN: center; COLOR: rgb(0,0,102); FONT-WEIGHT: bold"><font size="2"><a href="https://ap2.salesforce.com/00O28000002AfEg" target="_top">世帯内訳</a></font></td>
+            <td style="TEXT-ALIGN: center; COLOR: rgb(0,0,102); FONT-WEIGHT: bold"><font size="2"><a href="https://ap2.salesforce.com/00O28000003FLgg" target="_top">活動一覧(入居者別)</a></font></td>
+        </tr>
+        <tr>
+        </tr>
+    </tbody>
+</table>
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>
